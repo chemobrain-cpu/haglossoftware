@@ -1,0 +1,206 @@
+.navContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+}
+
+.contact {
+    background-color: rgba(255,255,255,.1);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px 20px 40px;
+    border-bottom: .5px solid rgba(255,255,255,.1);
+}
+
+
+
+.navContainer  .leftList {
+    display: flex;
+    color: #fff;
+    gap: 15px;
+
+}
+
+
+
+.navContainer  .rightList {
+    display: flex;
+    color: #fff;
+    gap: 15px
+}
+
+.navContainer ul {
+    list-style-type: none;
+
+}
+
+.navContainer li {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.navContainer li span {
+    margin-right: 10px
+}
+
+/* navigation  */
+.navigation {
+    position: relative;
+    height: 100px;
+    background-color: rgba(255,255,255,.1);
+    color:white;
+    
+}
+
+.navContainer .navigation {
+    display: flex;
+    width: 100%;
+    padding: 18px 2px 18px 2px;
+    justify-content: space-between;
+    padding-right:40px;
+    padding-left:40px;
+}
+
+.navigation .logoContainer {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+.navigation .menuContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+
+}
+
+.menu {
+    display: none
+}
+
+.navigation ul {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.navigation li {
+    text-transform: capitalize;
+
+}
+
+/* styling the mobile menu*/
+
+
+
+.navigationMobile ul {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: #fff;
+    list-style-type: none;
+
+}
+
+.navigationMobile li {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 1.3rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigationMobile li:hover {
+    background-color: rgb(25, 25, 25);
+}
+
+.mobileHideide {
+    display: none
+}
+
+
+/* hiding this contact bar for smaller screen*/
+@media screen and (max-width: 1024px) {
+    .contact {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        gap: 10px
+    }
+
+    .navContainer .leftList {
+        gap: 30px;
+
+    }
+
+    .navContainer .rightList {
+        gap: 30px;
+
+    }
+
+}
+
+
+@media screen and (max-width: 750px) {
+    .navContainer {
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+    .contact{
+        background-color: rgba(255,255,255,.1);
+        display:none
+    }
+
+    
+    .navContainer .leftContact {
+        display:none
+    }
+    .navContainer .rightContact {
+        display:none
+    }
+
+    .navigation .menuContainer {
+        display: none
+    }
+
+    .menu {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+
+    }
+
+    .navigationMobile {
+        width: 100%;
+        background-color: rgb(25, 25, 25);
+        position: absolute;
+        z-index: 999;
+        top: 100px;
+        transition: 3s ease-in
+    }
+
+
+
+
+}
+
+@media screen and (max-width: 560px) {}
