@@ -20,7 +20,7 @@ function ServiceCard() {
             </div>
             <div className='card-tail'>
                 <div className='footer-left'>
-                    <span className='material-icons' style={{ fontSize: '3rem', color: 'rgb(247, 178, 50)' }}>settings</span>
+                    <span className='material-icons' style={{ fontSize: '3rem', color: 'rgb(26, 42, 114)' }}>settings</span>
 
                 </div>
 

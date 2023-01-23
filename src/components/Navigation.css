@@ -96,7 +96,7 @@
 
 }
 .navigation li:hover{
-    background-color: rgb(247, 178, 50);
+    background-color: rgb(26, 42, 114);
     padding:10px 30px;
     transition: 1s ease
 }
