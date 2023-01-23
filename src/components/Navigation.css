@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px 20px 40px;
+    padding: 20px 5% 20px 5%;
     border-bottom: .5px solid rgba(255,255,255,.1);
 }
 
@@ -50,21 +50,19 @@
 }
 
 /* navigation  */
-.navigation {
-    position: relative;
-    height: 100px;
-    background-color: rgba(255,255,255,.1);
-    color:white;
-    
-}
+
 
 .navContainer .navigation {
     display: flex;
     width: 100%;
-    padding: 18px 2px 18px 2px;
     justify-content: space-between;
-    padding-right:40px;
-    padding-left:40px;
+    padding-right:5%;
+    padding-left: 5%;
+    position: relative;
+    height: 80px;
+    color:white;
+    border-bottom: .5px solid rgba(255,255,255,.1);
+   
 }
 
 .navigation .logoContainer {
@@ -79,7 +77,6 @@
     flex: 1;
     display: flex;
     align-items: center;
-    padding-left: 20px;
 
 }
 
@@ -98,9 +95,16 @@
     text-transform: capitalize;
 
 }
+.navigation li:hover{
+    background-color: rgb(247, 178, 50);
+    padding:10px 30px;
+    transition: 1s ease
+}
 
 /* styling the mobile menu*/
 
+.navigationMobile{
+}
 
 
 .navigationMobile ul {
@@ -124,9 +128,7 @@
     justify-content: center;
 }
 
-.navigationMobile li:hover {
-    background-color: rgb(25, 25, 25);
-}
+
 
 .mobileHideide {
     display: none
@@ -145,6 +147,7 @@
         gap: 10px
     }
 
+
     .navContainer .leftList {
         gap: 30px;
 
@@ -159,14 +162,20 @@
 
 
 @media screen and (max-width: 750px) {
-    .navContainer {
-        padding-left: 0%;
-        padding-right: 0%;
+    .navContainer .navigation{
+        padding-right:2%;
+        padding-left: 2%;
+        background-color:rgb(20, 40, 56) ;
     }
+   
+    
     .contact{
-        background-color: rgba(255,255,255,.1);
         display:none
     }
+
+  
+    
+
 
     
     .navContainer .leftContact {
@@ -176,25 +185,31 @@
         display:none
     }
 
+    
+    
+
+    
+    
+
     .navigation .menuContainer {
         display: none
     }
+    
 
     .menu {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        padding-right: 10px;
 
     }
 
     .navigationMobile {
         width: 100%;
-        background-color: rgb(25, 25, 25);
+        background-color:rgb(20, 40, 56) ;
         position: absolute;
         z-index: 999;
-        top: 100px;
+        top: 80px;
         transition: 3s ease-in
     }
 
@@ -202,5 +217,3 @@
 
 
 }
-
-@media screen and (max-width: 560px) {}

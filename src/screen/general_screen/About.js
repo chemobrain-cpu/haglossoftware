@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css';
+import './About.css';
 import Navigation from '../../components/Navigation';
 import Slider from '../../components/Slider';
 import Feature from '../../components/Feature';
@@ -11,25 +11,14 @@ import Testimony from '../../components/Testimony';
 import { Recoveries } from '../../components/Recoveries';
 import News from '../../components/News';
 import Footer from '../../components/Footer';
+import AboutSlider from '../../components/AboutSlider';
 
 //let { admin} = useSelector(state => state.userAuth)
-function Home() {
+function AboutUs() {
     return (
         <>
             <Navigation />
-            <Slider />
-            <Feature />
-
-
-            <TopicHead headText='OUR PROFESSIONAL' colorText='SERVICES' />
-
-            <Services />
-
-            <About />
-
-            <Work />
-            <Testimony />
-            <Recoveries />
+            <AboutSlider />
             <News />
 
             <Footer/>
@@ -41,4 +30,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default AboutUs;

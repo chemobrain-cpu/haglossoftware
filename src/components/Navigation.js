@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Home.module.css';
+import './Navigation.css';
 
 //let { admin} = useSelector(state => state.userAuth)
 function Navigation() {
@@ -13,6 +13,28 @@ function Navigation() {
             //
             setIsMobile(false)
             setIsShowMobileMenu(false)
+        }
+    })
+
+
+
+
+    window.addEventListener("scroll", function () {
+        const navigation = document.querySelector(".navigation")
+        const contact = document.querySelector(".contact")
+        if (window.scrollY > 200) {
+            navigation.style.backgroundColor = 'rgb(20, 40, 56)   '
+            contact.style.display='none'
+
+
+        } else {
+            navigation.style.backgroundColor = 'rgb(20, 40, 56)   '
+            if (Number(window.innerWidth) < 750) {
+                return
+            }
+            contact.style.display='flex'
+            
+
         }
     })
 
@@ -31,10 +53,10 @@ function Navigation() {
     }
 
     return (
-        <div className={styles.navContainer}>
-            <div className={styles.contact}>
-                <div className={styles.leftContact}>
-                    <ul className={styles.leftList}>
+        <div className='navContainer'>
+            <div className='contact'>
+                <div className='leftContact'>
+                    <ul className='leftList'>
                         <li> <span className='material-icons'>phone</span>(234) 0200 17813
 
                         </li>
@@ -51,8 +73,8 @@ function Navigation() {
 
                 </div>
 
-                <div className={styles.rightContact}>
-                    <ul className={styles.rightList}>
+                <div className='rightContact'>
+                    <ul className='rightList'>
 
                         <li> <span className='material-icons'>login</span>Login
 
@@ -72,16 +94,16 @@ function Navigation() {
 
             </div>
 
-            <div className={styles.navigation}>
-                <div className={styles.logoContainer}>
+            <div className='navigation'>
+                <div className='logoContainer'>
                     <h1>LOGO</h1>
 
                 </div>
-                <div className={styles.menu} onClick={showMobileMenu}>
+                <div className='menu' onClick={showMobileMenu}>
                     <span className='material-icons'>menu</span>
                 </div>
 
-                <div className={styles.menuContainer}>
+                <div className='menuContainer'>
                     <ul>
                         <li> HOME</li>
                         <li>CONTACT US</li>
@@ -92,7 +114,7 @@ function Navigation() {
 
             </div>
 
-            {isShowMobileMenu ? <div className={isMobile || isShowMobileMenu ? styles.navigationMobile : styles.mobileHideide}>
+            {isShowMobileMenu ? <div className={isMobile || isShowMobileMenu ? 'navigationMobile' : 'mobileHideide'}>
                 <ul>
                     <li> Home</li>
                     <li>Contact Us</li>

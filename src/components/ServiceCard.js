@@ -1,0 +1,43 @@
+import React from 'react';
+import './ServiceCard.css';
+
+//let { admin} = useSelector(state => state.userAuth)
+function ServiceCard() {
+
+    return (
+        <div className='service-card'>
+            <div className='card-head'  >
+
+                <div className='img' style={{ backgroundImage: 'url(../../tracker3.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'}} >
+
+                    <div className='curtain'>
+                        <button>READ MORE</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div className='card-tail'>
+                <div className='footer-left'>
+                    <span className='material-icons' style={{ fontSize: '3rem', color: 'rgb(247, 178, 50)' }}>settings</span>
+
+                </div>
+
+                <div className='footer-right'>
+                    <h3>House Renovation</h3>
+                    <p>Lorem ipsum dolor sit amet solut, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    );
+}
+
+export default ServiceCard;
