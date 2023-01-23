@@ -6,7 +6,7 @@ function FeatureCard() {
 
     return (
         <div className='feature-card'>
-            <span className='material-icons' style={{ color: 'rgb(247, 178, 50)', fontSize: '5rem' }}>
+            <span className='material-icons' style={{ color: 'rgb(26, 42, 114)', fontSize: '5rem' }}>
                 settings
             </span>
             <h3>Architect design</h3>
