@@ -19,14 +19,14 @@ styling the progressive bar
     height: 30px;
     border-radius: 2px;
     background-color: rgb(20, 40, 56);
-    background-color: rgb(26, 42, 114);
+    background-color: rgb(58, 79, 175);
     overflow: hidden;
 }
 
 .progressive {
     height: 100%;
     width: 80%;
-    background-color: rgb(26, 42, 114);
+    background-color: rgb(58, 79, 175);
     background-color: rgb(20, 40, 56);
     display: flex;
     justify-content: flex-start;
