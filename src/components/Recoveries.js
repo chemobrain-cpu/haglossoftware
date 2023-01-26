@@ -36,7 +36,7 @@ export const Recoveries = ({recoveredClient}) => {
                             </tr>
 
                         </thead>
-                        <tbody>
+                        {/*<tbody>
                            {recoveredClient.length > 0 ?recoveredClient.map(data => <tr>
                                 <td>{data.client_name}</td>
 
@@ -53,7 +53,7 @@ export const Recoveries = ({recoveredClient}) => {
                             </tr>) : <></>}
 
 
-                        </tbody>
+                        </tbody>*/}
                     </table>
 
                 </div>
