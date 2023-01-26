@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './FeatureCard.css';
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
 //let { admin} = useSelector(state => state.userAuth)
 function FeatureCard() {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
 
     return (
-        <div className='feature-card'>
+        <div className='feature-card' data-aos="fade-up">
             <span className='material-icons' style={{ color: 'rgb(58, 79, 175)', fontSize: '5rem' }}>
                 settings
             </span>

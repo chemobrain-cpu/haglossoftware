@@ -7,9 +7,9 @@ function AboutSliderCard() {
     return (
         <div className='carouselCard' style={{backgroundImage:'url(../google-map.jpeg)',backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}}>
             <div className='carouselContent'>
-                <h1>About  <span>Us</span> /Haglos</h1>
+                <h1>About  <span>Us</span> /Haglos </h1>
             </div>
-            {/*<img src='../tracker4.png' />*/}
+           
 
         </div>
 

@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ServiceCard.css';
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
 //let { admin} = useSelector(state => state.userAuth)
 function ServiceCard() {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
 
     return (
-        <div className='service-card'>
+        <div className='service-card' data-aos="fade-up">
             <div className='card-head'  >
 
                 <div className='img' style={{ backgroundImage: 'url(../../tracker3.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'}} >

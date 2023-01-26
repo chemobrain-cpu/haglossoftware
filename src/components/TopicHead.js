@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './TopicHead.css';
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
 //let { admin} = useSelector(state => state.userAuth)
 function TopicHead({headText,colorText,headColor}) {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
 
     return (
-        <div className='header'>
+        <div className='header' data-aos="fade-up">
             <div className='header-box'>
 
             </div>

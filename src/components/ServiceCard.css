@@ -63,13 +63,12 @@
 }
 .service-card h3{
     font-size:1.5rem;
-    color:rgb(50,50,50);
+    color:rgb(100,100,100);
     margin-bottom:10px;
-    font-weight: 500;
 }
 
 .service-card p{
-    font-size:1rem;
+    font-size:1.1rem;
     text-align:left;
     color:rgb(150,150,150);
     line-height:25px;

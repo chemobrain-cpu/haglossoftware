@@ -5,13 +5,13 @@
 .footer .brands{
     background-color:rgb(58, 79, 175) ;
     display:flex;
-    height:150px;
+    height:100px;
     overflow-x: scroll;
     justify-content: space-between;
 }
 .footer .image-container{
-    max-width:150px;
-    min-width: 150px;
+    max-width:120px;
+    min-width: 120px;
 }
 
 .footer .brands img{

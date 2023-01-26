@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Testimony.css';
 import TestimonyCard from './TestimonyCard';
 import TopicHead from './TopicHead';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css'
+import AOS from 'aos'
+import "aos/dist/aos.css";
+
 const responsive = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
@@ -23,15 +26,20 @@ const responsive = {
 };
 
 function Testimony() {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
 
 
     return (
-        <div className='testimony'>
+        <div className='testimony' data-aos="fade-up">
 
             <TopicHead headText='OUR' colorText='TESTIMONIES' />
             <Carousel swipeable={false}
                 draggable={false}
-                showDots={true}
+                showDots={false}
                 responsive={responsive}
                 ssr={true} // means to render carousel on server-side.
                 infinite={true}
@@ -41,6 +49,7 @@ function Testimony() {
                 customTransition="all .5"
                 transitionDuration={500}
                 containerClass='carousels-root'
+                
 
             >
                 <TestimonyCard

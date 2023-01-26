@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './Navigation.css';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { logout } from "../store/action/userAppStorage";
 
 //let { admin} = useSelector(state => state.userAuth)
-function Navigation() {
+function Navigation({ activeScreen, status }) {
     let [isMobile, setIsMobile] = useState(false)
     let [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
+    let navigate = useNavigate()
+
+    let { admin } = useSelector(state => state.userAuth)
+
+
     window.addEventListener('resize', () => {
         if (Number(window.innerWidth) < 750) {
             setIsMobile(true)
@@ -16,6 +25,10 @@ function Navigation() {
         }
     })
 
+    let navigateHandler = useCallback((link) => {
+        navigate(`/${link}`)
+    }, [navigate])
+
 
 
 
@@ -24,7 +37,7 @@ function Navigation() {
         const contact = document.querySelector(".contact")
         if (window.scrollY > 200) {
             navigation.style.backgroundColor = 'rgb(20, 40, 56)   '
-            contact.style.display='none'
+            contact.style.display = 'none'
 
 
         } else {
@@ -32,8 +45,8 @@ function Navigation() {
             if (Number(window.innerWidth) < 750) {
                 return
             }
-            contact.style.display='flex'
-            
+            contact.style.display = 'flex'
+
 
         }
     })
@@ -52,9 +65,14 @@ function Navigation() {
         }
     }
 
+
+    let logoutHandler = ()=>{
+        alert('wanna logout')
+    }
+
     return (
         <div className='navContainer'>
-            <div className='contact'>
+            {!status ? <div className='contact'>
                 <div className='leftContact'>
                     <ul className='leftList'>
                         <li> <span className='material-icons'>phone</span>(234) 0200 17813
@@ -76,10 +94,10 @@ function Navigation() {
                 <div className='rightContact'>
                     <ul className='rightList'>
 
-                        <li> <span className='material-icons'>login</span>Login
+                        <li > <span className='material-icons' >login</span>Login
 
                         </li>
-                        <li> <span className='material-icons'>person</span>Register
+                        <li > <span className='material-icons'>person</span>Register
 
                         </li>
                         <li><span className='material-icons'>facebook</span> facebook
@@ -92,7 +110,11 @@ function Navigation() {
 
                 </div>
 
-            </div>
+            </div> : <></>}
+
+
+
+
 
             <div className='navigation'>
                 <div className='logoContainer'>
@@ -105,9 +127,27 @@ function Navigation() {
 
                 <div className='menuContainer'>
                     <ul>
-                        <li> HOME</li>
-                        <li>CONTACT US</li>
-                        <li> LOGIN</li>
+
+
+
+                        <li style={{ backgroundColor: activeScreen === 'home' ? 'rgb(58, 79, 175)' : 'transparent', padding: activeScreen === 'home' ? '10px 30px' : '0px' }} onClick={() => navigateHandler('')}> HOME</li>
+
+
+                        {admin ? <></> : <li style={{ backgroundColor: activeScreen === 'about' ? 'rgb(58, 79, 175)' : 'transparent', padding: activeScreen === 'about' ? '10px 30px' : '0px' }} onClick={() => navigateHandler('about')}>ABOUT</li>}
+
+                        {admin ? <></> : <li style={{ backgroundColor: activeScreen === 'login' ? 'rgb(58, 79, 175)' : 'transparent', padding: activeScreen === 'login' ? '10px 30px' : '0px' }} onClick={() => navigateHandler('login')}> LOGIN</li>}
+
+
+                        {admin ? <li style={{ backgroundColor: activeScreen === 'login' ? 'rgb(58, 79, 175)' : 'transparent', padding: activeScreen === 'login' ? '10px 30px' : '0px' }} onClick={() => navigateHandler('login')}> DASHBOARD</li> : <></>}
+
+                        {admin ? <li style={{ backgroundColor: activeScreen === 'login' ? 'rgb(58, 79, 175)' : 'transparent', padding: activeScreen === 'login' ? '10px 30px' : '0px' }} onClick={() => navigateHandler('login')}> ADD</li> : <></>}
+
+                        {admin ? <li style={{ backgroundColor: activeScreen === 'login' ? 'rgb(58, 79, 175)' : 'transparent', padding: activeScreen === 'login' ? '10px 30px' : '0px' }} onClick={logoutHandler}> LOGOUT</li> : <></>}
+
+
+
+
+
                     </ul>
 
                 </div>
@@ -116,17 +156,34 @@ function Navigation() {
 
             {isShowMobileMenu ? <div className={isMobile || isShowMobileMenu ? 'navigationMobile' : 'mobileHideide'}>
                 <ul>
-                    <li> Home</li>
-                    <li>Contact Us</li>
-                    <li> Login</li>
+
+                    <li style={{ backgroundColor: activeScreen === 'home' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#fff' }} onClick={() => navigateHandler('')}> Home</li>
+
+
+
+
+                    {admin?<></>:<li style={{ backgroundColor: activeScreen === 'about' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#fff' }} onClick={() => navigateHandler('about')}>About</li>}
+
+
+
+
+                    {admin?<></>:<li style={{ backgroundColor: activeScreen === 'login' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#fff' }} onClick={() => navigateHandler('login')}> Login</li>}
+
+
+
+
+                    {admin?<li className='li' style={{ backgroundColor: activeScreen === 'dashboard' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#ffff' }} onClick={() => navigateHandler('dashboard')}> Dashboard</li>:<></>}
+
+
+
+                    {admin?<li className='li' style={{ backgroundColor: activeScreen === 'add' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#ffff' }} onClick={() => navigateHandler('add')}> Add</li>:<></>}
+
+                    {admin?<li className='li' style={{  padding: '10px 10px', color: '#ffff' }} onClick={logoutHandler}> Logout</li>:<></>}
+
+
                 </ul>
 
             </div> : <></>}
-
-
-
-
-
 
         </div>
 

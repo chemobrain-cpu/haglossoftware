@@ -1,14 +1,19 @@
-import IO from 'socket.io-client'
-import axios from 'axios'
 export const SIGNUP_USER = "SIGNUP_USER";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOG_USER_IN = 'LOG_USER_IN'
-export const USERS = 'USERS'
+export const GETUSERS = 'GETUSERS'
+export const GETUSER = 'GETUSER'
+export const DELETEUSER = 'DELETEUSER'
+export const EDITUSER = 'EDITUSER'
+export const SEARCH = 'SEARCH'
+export const ADD_CLIENT = 'ADD_CLIENT '
+export const EDIT_CLIENT = 'EDIT_CLIENT '
+export const DELETE_CLIENT= 'DELETE_CLIENT'
+export const LOAD_CLIENTS= 'LOAD_CLIENTS'
+export const SEARCH_CLIENT = 'SEARCH_CLIENT'
+export const LOAD_RECOVERY = 'LOAD_RECOVERY'
+export const LOGOUT= 'LOGOUT'
 
-/* Admin actions*/
-
-//export let socket = IO(`/`)
-let timer
 //utility function for calculating if token expires
 let calculateRemainingTime = (expiryDate) => {
   //getting current time in milliseconds
@@ -24,15 +29,15 @@ let calculateRemainingTime = (expiryDate) => {
 let retrievedStoredToken = () => {
   let tokenFromStorage = localStorage.getItem('token')
 
-  let expiryDate = localStorage.getItem('expiry')
+  let expiryDate = localStorage.getItem('expiresIn')
 
   const timeLeft = calculateRemainingTime(expiryDate)
 
   if (timeLeft <= 3600) {
 
     localStorage.removeItem('token')
-    localStorage.removeItem('expiry')
-    localStorage.removeItem('user')
+    localStorage.removeItem('expiresIn')
+    localStorage.removeItem('admin')
     return {
       token: "",
       expiresIn: ""
@@ -44,6 +49,7 @@ let retrievedStoredToken = () => {
   }
 }
 
+//login in admin by force
 export const checkIfIsLoggedIn = () => {
   return async (dispatch, getState) => {
     try {
@@ -53,20 +59,28 @@ export const checkIfIsLoggedIn = () => {
       let { token, expiresIn } = retrievedStoredToken()
 
       if (!token) {
-        return
+        return {
+          bool: true,
+          //data here refers to user and dispatch
+          message: 'token expired'
+        }
       }
 
       //convert expiresIN backt to hours
       expiresIn = expiresIn / (60 * 60 * 1000)
 
       localStorage.setItem('token', token)
-      localStorage.setItem('tokenExpiry', expiresIn)
+      localStorage.setItem('expiresIn', expiresIn)
 
-      let user = JSON.parse(localStorage.getItem('user'))
+      let user = JSON.parse(localStorage.getItem('admin'))
       if (!user) {
-        return
+        return {
+          bool: true,
+          //data here refers to user and dispatch
+          message: 'no user found'
+        }
       }
-      response = await fetch(`/auth/adminbytoken`, {
+      response = await fetch(`https://haglos-backend.onrender.com//auth/adminbytoken`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -75,19 +89,37 @@ export const checkIfIsLoggedIn = () => {
 
       if (response.status == 200) {
         let data = await response.json()
+
+        localStorage.setItem("admin", JSON.stringify(data.response.admin))
+        localStorage.setItem("token", JSON.stringify(data.response.token))
+        localStorage.setItem("expiresIn", JSON.stringify(data.response.expiresIn))
+
         dispatch({type:LOG_USER_IN,payload:data.response})
+
+        return {
+          bool: true,
+          //data here refers to user and dispatch
+          message: data.response
+        }
       }
 
     } catch (err) {
+      return {
+          bool: true,
+          //data here refers to user and dispatch
+          message: 'network error'
+        }
 
     }
 
   }
 }
-export const adminsignup = (data) => {
+
+//signup admin
+export const signup = (data) => {
   return async (dispatch, getState) => {
     try {
-      const response = await fetch(`/auth/adminsignup`, {
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -112,7 +144,12 @@ export const adminsignup = (data) => {
       if (response.status === 200) {
         let data = await response.json()
 
-        dispatch({ type: SIGNUP_USER, payload: data.response })
+        localStorage.setItem("admin", JSON.stringify(data.response.admin))
+        localStorage.setItem("token", JSON.stringify(data.response.token))
+        localStorage.setItem("expiresIn", JSON.stringify(data.response.expiresIn))
+
+        dispatch({ type: LOGIN_USER, payload: data.response })
+
         return {
           bool: true,
           //data here refers to user and dispatch
@@ -120,7 +157,6 @@ export const adminsignup = (data) => {
         }
       }
     } catch (err) {
-      console.log(err)
       return {
         bool: false,
         message: "network error"
@@ -131,12 +167,13 @@ export const adminsignup = (data) => {
   }
 
 }
-export const adminlogin = (data) => {
+//login admin
+export const login = (data) => {
   return async (dispatch, getState) => {
     
     //do some check on the server if its actually login before proceding to dispatch
     try {
-      const response = await fetch(`/auth/adminLogin`, {
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +198,9 @@ export const adminlogin = (data) => {
         let data = await response.json()
 
       
-        localStorage.setItem("admin", JSON.stringify(data.response.user))
+        localStorage.setItem("admin", JSON.stringify(data.response.admin))
+        localStorage.setItem("token", JSON.stringify(data.response.token))
+        localStorage.setItem("expiresIn", JSON.stringify(data.response.expiresIn))
 
         dispatch({ type: LOGIN_USER, payload: data.response })
 
@@ -180,14 +219,17 @@ export const adminlogin = (data) => {
     }
   }
 }
-
-export const subadminsignup = (data) => {
+//add client 
+export const addClient = (data) => {
   return async (dispatch, getState) => {
+    //do some check on the server if its actually login before proceding to dispatch
+    let { token } = getState().userAuth
     try {
-      const response = await fetch(`/auth/subadminsignup`, {
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/users`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "header": `${token}`
         },
         body: JSON.stringify(data)
       })
@@ -200,7 +242,6 @@ export const subadminsignup = (data) => {
       }
       if (response.status === 300) {
         let data = await response.json()
-       
         return {
           bool: false,
           message: data.response
@@ -209,10 +250,9 @@ export const subadminsignup = (data) => {
       if (response.status === 200) {
         let data = await response.json()
 
-        dispatch({ type: SIGNUP_USER, payload: data.response })
+        dispatch({ type: ADD_CLIENT, payload: data.response })
         return {
           bool: true,
-          //data here refers to user and dispatch
           message: data.response
         }
       }
@@ -222,21 +262,26 @@ export const subadminsignup = (data) => {
         bool: false,
         message: "network error"
       }
-
     }
-
   }
-
 }
+//get all users
+
 
 
 export const loadClients = () => {
   
   return async (dispatch, getState) => {
     //do some check on the server if its actually login before proceding to dispatch
-    let { admin } = getState().userAuth
+    let { token } = getState().userAuth
     try {
-      const response = await fetch(`/auth/users`)
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/users`,{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "header": `${token}`
+        }
+      })
       if (response.status === 404) {
         let data = await response.json()
         return {
@@ -253,6 +298,8 @@ export const loadClients = () => {
       }
       if (response.status === 200) {
         let data = await response.json()
+        dispatch({ type: LOAD_CLIENTS, payload: data.response })
+
         return {
           bool: true,
           message: data.response
@@ -268,217 +315,19 @@ export const loadClients = () => {
   }
 }
 
+//get single user
 export const loadClient = (id) => {
   
   return async (dispatch, getState) => {
     //do some check on the server if its actually login before proceding to dispatch
+    let { token } = getState().userAuth
     try {
-      const response = await fetch(`/auth/user/${id}`, {
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/users/${id}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-        }
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-
-//admin operating onn admins
-export const loadAdmins = () => {
-  
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    let { admin } = getState().userAuth
-    try {
-      const response = await fetch(`/auth/admins`)
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-
-export const deleteAdmin = (id) => {
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    let { admin } = getState().userAuth
-    try {
-      const response = await fetch(`/auth/deleteadmin/${id}`)
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-
-export const loadAdmin = (id) => {
-  
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/admin/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-
-
-export const updateClient = (data) => {
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/updateuser`, {
-        method:'PUT',
-        headers: {
-          "Content-Type": "application/json",
+          "header": `${token}`
         },
-        body:JSON.stringify(data)
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-export const updateAdmin = (data) => {
-  
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/updateadmin`, {
-        method:'PUT',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body:JSON.stringify(data)
       })
       if (response.status === 404) {
         let data = await response.json()
@@ -511,315 +360,17 @@ export const updateAdmin = (data) => {
   }
 }
 
-export const upgradeClient = (data) => {
-  
+//edit specific user
+export const editClient = (id,data) => {
   return async (dispatch, getState) => {
     //do some check on the server if its actually login before proceding to dispatch
+    let { token } = getState().userAuth
     try {
-      const response = await fetch(`/auth/upgradeuser`, {
-        method:'PUT',
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/users/${id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-        },
-        body:JSON.stringify(data)
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-
-export const emailClient = (data) => {
-  
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/emailuser`, {
-        method:'POST',
-        headers: {
-          "Content-Type": "application/json",
-          
-        },
-        body:JSON.stringify(data)
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-
-
-/* User actions*/
-
-export const confirm = (data) => {
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/verifyemail/${data}`, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-    
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-}
-export const checkEmail = (data)=>{
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/checkemail/${data}`, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-    
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-
-}
-
-export const checkAdminCode = (code)=>{
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/checkadmincode/${code}`, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-    
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      return {
-        bool: false,
-        message: "please check your network"
-      }
-    }
-  }
-
-}
-
-export const emailAdmin = (data)=>{
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/emailadmin`, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-    
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-
-}
-
-export const changeSecretKey = (data)=>{
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/changesecretkey`, {
-        method:'POST',
-        headers: {
-          "Content-Type": "application/json",
-          
-        },
-        body:JSON.stringify(data)
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: "network error"
-      }
-    }
-  }
-
-}
-
-
-
-export const resetPassword = (data) => {
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await fetch(`/auth/resetpassword/${data.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+          "header": `${token}`
         },
         body: JSON.stringify(data)
       })
@@ -831,7 +382,6 @@ export const resetPassword = (data) => {
         }
       }
       if (response.status === 300) {
-        
         let data = await response.json()
         return {
           bool: false,
@@ -840,7 +390,96 @@ export const resetPassword = (data) => {
       }
       if (response.status === 200) {
         let data = await response.json()
-    
+        dispatch({ type: EDIT_CLIENT, payload: data.response })
+        return {
+          bool: true,
+          message: data.response
+        }
+      }
+    } catch (err) {
+      console.log(err)
+      return {
+        bool: false,
+        message: "network error"
+      }
+    }
+  }
+}
+
+//delete specific user
+export const deleteClient = (id) => {
+  
+  return async (dispatch, getState) => {
+    //do some check on the server if its actually login before proceding to dispatch
+    let { token } = getState().userAuth
+    try {
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "header": `${token}`
+        }
+      })
+      if (response.status === 404) {
+        let data = await response.json()
+        return {
+          bool: false,
+          message: data.response
+        }
+      }
+      if (response.status === 300) {
+        let data = await response.json()
+        return {
+          bool: false,
+          message: data.response
+        }
+      }
+      if (response.status === 200) {
+        let data = await response.json()
+        dispatch({ type: DELETE_CLIENT, payload:id })
+        return {
+          bool: true,
+        }
+      }
+    } catch (err) {
+      console.log(err)
+      return {
+        bool: false,
+        message: "network error"
+      }
+    }
+  }
+}
+
+
+export const recovery = ()=>{
+  return async (dispatch, getState) => {
+    //do some check on the server if its actually login before proceding to dispatch
+    try {
+      const response = await fetch(`https://haglos-backend.onrender.com//auth/recovers`,{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      if (response.status === 404) {
+        let data = await response.json()
+        return {
+          bool: false,
+          message: data.response
+        }
+      }
+      if (response.status === 300) {
+        let data = await response.json()
+        return {
+          bool: false,
+          message: data.response
+        }
+      }
+      if (response.status === 200) {
+        let data = await response.json()
+        dispatch({ type: LOAD_RECOVERY, payload: data.response })
+
         return {
           bool: true,
           message: data.response
@@ -853,140 +492,15 @@ export const resetPassword = (data) => {
       }
     }
   }
+
 }
-export const signup = (data) => {
+
+
+
+export const logout = ()=>{
   return async (dispatch, getState) => {
-    try {
-      let response = await fetch(`/auth/emailsignup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-      if (response.status === 400) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response
-        }
-      }
-
-    } catch (err) {
-      return {
-        bool: false,
-        message: err.message
-      }
-    }
+    dispatch({ type: LOGOUT })
   }
+
 }
 
-//login handler
-export const login = (data) => {
-  return async (dispatch, getState) => {
-    try {
-      let response = await fetch(`/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      })
-      if (response.status === 404) {
-        let data = await response.json()
-        return {
-          bool: false,
-          message: data.response,
-          url: 'Signup'
-        }
-      }
-      if (response.status === 403) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response,
-          url: 'Login'
-        }
-      }
-      if (response.status === 201) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response,
-          url: 'Verification'
-        }
-      }
-      if (response.status === 202) {
-        let data = await response.json()
-        return {
-          bool: true,
-          message: data.response,
-          url: 'VerifyNumber'
-        }
-      }
-      if (response.status === 200) {
-        let data = await response.json()
-        //dispatching the LOGIN action
-      
-        return {
-          bool: true,
-          message: data.response,
-          url: 'Home'
-        }
-      }
-      if (response.status === 300) {
-        let data = await response.json()
-        return {
-          bool:false,
-          message: data.response,
-          url: 'Login'
-        }
-      }
-    } catch (err) {
-      return {
-        bool: false,
-        message: err.message,
-        url: 'Login'
-      }
-    }
-  }
-}
-
-/* loading coins */
-
-export const loadCoins = (pageNumber = 1) => {
-  return async (dispatch, getState) => {
-    //do some check on the server if its actually login before proceding to dispatch
-    try {
-      const response = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=4&page=1&sparkline=false&price_change_percentage=24h`)
-      
-
-      return {
-        bool: true,
-        message: response.data
-      }
-    } catch (err) {
-      console.log(err)
-      return {
-        bool: false,
-        message: err
-      }
-
-    }
-
-  }
-}

@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './TestimonyCard.css';
+import AOS from 'aos'
+import "aos/dist/aos.css";
+
 
 //let { admin} = useSelector(state => state.userAuth)
 function TestimonyCard({username,country,imgUrl}) {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
+
     return (
-        <div className='testimony-card'>
+        <div className='testimony-card' data-aos="fade-up">
             <div className='img-con'>
                 <img src={imgUrl} />
 

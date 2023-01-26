@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Footer.css';
-
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
 //let { admin} = useSelector(state => state.userAuth)
 function Footer() {
-    return (<div className='footer'>
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
+    return (<div className='footer' data-aos="fade-up">
     <div className='brands'>
         <div className='image-container'>
             <img src='../../logo1.png' />

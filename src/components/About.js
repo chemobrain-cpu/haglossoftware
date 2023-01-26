@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './About.css';
 import ProgressBar from './ProgressBar';
 import TopicHead from './TopicHead';
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
 //let { admin} = useSelector(state => state.userAuth)
 function About() {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
 
 
-    return (<div className='about-section'>
+    return (<div className='about-section' data-aos="fade-up">
     <TopicHead headText='WHO' colorText='WE ARE' />
-
 
     <div className='about-content'>
         <div className='about-left'>

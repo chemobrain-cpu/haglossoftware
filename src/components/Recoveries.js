@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import TopicHead from './TopicHead';
-import './Recoveries.css'
+import './Recoveries.css';
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
-export const Recoveries = () => {
+export const Recoveries = ({recoveredClient}) => {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
+
+
+      //sorting algorithms
+  let sortByYear = (obj)=>{
+    return obj.sort((a,b)=>{
+        let expiry = new Date(a.expiring_date)
+        let expiry2 = new Date(b.expiring_date)
+        return expiry - expiry2
+    })
+  }
+
+
   return (
-    <div className='recoveries'>
+    <div className='recoveries' data-aos="fade-up">
                 <TopicHead headText='OUR RECENT' colorText='RECOVERIES' />
 
                 <div className='table-container'>
@@ -25,54 +44,21 @@ export const Recoveries = () => {
 
                         </thead>
                         <tbody>
-                            <tr>
-                                <th>CLIENT NAME</th>
-                                <th>CLIENT PHONE NUMBERS</th>
-                                <th>RIDER NAME</th>
-                                <th>CHASIS NO:</th>
-                                <th>VEHICLE REG NO:</th>
-                                <th>TRACKER SIM NO</th>
-                                <th>TRACKER ID</th>
-                                <th>INSTALLATION DATE</th>
-                                <th>EXPIRING DATE</th>
+                           {recoveredClient.length > 0 ? sortByYear(recoveredClient).map(data => <tr>
+                                <td>{data.client_name}</td>
 
-                            </tr>
-                            <tr>
-                                <th>CLIENT NAME</th>
-                                <th>CLIENT PHONE NUMBERS</th>
-                                <th>RIDER NAME</th>
-                                <th>CHASIS NO:</th>
-                                <th>VEHICLE REG NO:</th>
-                                <th>TRACKER SIM NO</th>
-                                <th>TRACKER ID</th>
-                                <th>INSTALLATION DATE</th>
-                                <th>EXPIRING DATE</th>
+                                <td>{data.client_phone_numbers} </td>
+                                <td>{data.rider_name_no} </td>
+                                <td>{data.chasis_no}</td>
+                                <td>{data.vehicle_reg_no}</td>
+                                <td>{data.tracker_sim_no}</td>
+                                <td>{data.tracker_id}</td>
+                                <td>{data.installation_date}</td>
+                                <td>{data.expiring_date}</td>
+                                
 
-                            </tr>
-                            <tr>
-                                <th>CLIENT NAME</th>
-                                <th>CLIENT PHONE NUMBERS</th>
-                                <th>RIDER NAME</th>
-                                <th>CHASIS NO:</th>
-                                <th>VEHICLE REG NO:</th>
-                                <th>TRACKER SIM NO</th>
-                                <th>TRACKER ID</th>
-                                <th>INSTALLATION DATE</th>
-                                <th>EXPIRING DATE</th>
+                            </tr>) : <></>}
 
-                            </tr>
-                            <tr>
-                                <th>CLIENT NAME</th>
-                                <th>CLIENT PHONE NUMBERS</th>
-                                <th>RIDER NAME</th>
-                                <th>CHASIS NO:</th>
-                                <th>VEHICLE REG NO:</th>
-                                <th>TRACKER SIM NO</th>
-                                <th>TRACKER ID</th>
-                                <th>INSTALLATION DATE</th>
-                                <th>EXPIRING DATE</th>
-
-                            </tr>
 
                         </tbody>
                     </table>
