@@ -13,6 +13,14 @@ export const Recoveries = ({recoveredClient}) => {
 
 
       //sorting algorithms
+           //sorting algorithms
+  let sortByYear = (obj)=>{
+    return obj.sort((a,b)=>{
+        let expiry = new Date(a.installation_date)
+        let expiry2 = new Date(b.installation_date)
+        return expiry - expiry2
+    })
+  }
   
 
   return (
@@ -37,7 +45,7 @@ export const Recoveries = ({recoveredClient}) => {
 
                         </thead>
                         <tbody>
-                           {recoveredClient.length > 0 ?recoveredClient.map(data => <tr>
+                           {recoveredClient.length > 0 ?sortByYear(recoveredClient).map(data => <tr>
                                 <td>{data.client_name}</td>
 
                                 <td>{data.client_phone_numbers} </td>

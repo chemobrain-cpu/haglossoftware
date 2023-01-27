@@ -82,8 +82,8 @@ function Dashboard({ status }) {
       //sorting algorithms
   let sortByYear = (obj)=>{
     return obj.sort((a,b)=>{
-        let expiry = new Date(a.expiring_date)
-        let expiry2 = new Date(b.expiring_date)
+        let expiry = new Date(a.installation_date)
+        let expiry2 = new Date(b.installation_date)
         return expiry - expiry2
     })
   }
