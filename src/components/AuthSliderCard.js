@@ -16,10 +16,9 @@ function AuthSliderCard({status}) {
                 {status=== 'add'?<h1>Add <span>Client</span></h1>:<></>}
 
             </div>
-            {/*<img src='../tracker4.png' />*/}
         </div>
 
     );
 }
 
-export default AuthSliderCard;
+export default React.memo(AuthSliderCard);

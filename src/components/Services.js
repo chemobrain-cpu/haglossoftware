@@ -1,19 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Services.css';
 import ServiceCard from './ServiceCard'
-import AOS from 'aos'
-import "aos/dist/aos.css";
 
-//let { admin} = useSelector(state => state.userAuth)
+
+
 function Services() {
-    useEffect(()=>{
-        AOS.init({
-            duration:1000
-        });
-    })
+    
 
     return (
-        <div className='service-section' data-aos="fade-up">
+        <div className='service-section'>
             <div className='wrapper'>
 
                 <div className='card-container'>
@@ -41,4 +36,4 @@ function Services() {
     );
 }
 
-export default Services;
+export default React.memo(Services);

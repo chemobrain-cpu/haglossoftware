@@ -19,4 +19,4 @@ function WorkCard() {
 </div>);
 }
 
-export default WorkCard;
+export default React.memo(WorkCard);

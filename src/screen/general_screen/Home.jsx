@@ -11,11 +11,10 @@ import Testimony from '../../components/Testimony';
 import { Recoveries } from '../../components/Recoveries';
 import News from '../../components/News';
 import Footer from '../../components/Footer';
-import AOS from 'aos'
 import "aos/dist/aos.css";
 import Loader from '../../components/Loader';
 import ModalError from '../../components/ModalError.js';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { recovery } from "../../store/action/userAppStorage";
 
 
@@ -25,18 +24,19 @@ function Home() {
     let [errorContent, setErrorContent] = useState('')
     let dispatch = useDispatch()
 
-    let { recoveredClient } = useSelector(state => state.userAuth)
-
 
     let loadRecoveryClients = useCallback(async() => {
         setIsLoading(true)
+        
         let res = await dispatch(recovery())
         if (!res.bool) {
             throw new Error('error occured')
         }
         
+        
          
     },[recovery])
+
 
     useEffect(()=>{
         loadRecoveryClients().then(data=>{
@@ -51,11 +51,13 @@ function Home() {
 
     
 
-    let gotIt = ()=>{
+    let gotIt = useCallback(()=>{
         setIsError(false)
         setErrorContent('')
         setIsLoading(false)
-    }
+    },[])
+
+    
 
 
     return (
@@ -75,7 +77,7 @@ function Home() {
 
             <Work />
             <Testimony />
-            <Recoveries recoveredClient={recoveredClient} />
+            <Recoveries />
             <News />
 
             <Footer />

@@ -16,4 +16,4 @@ function AboutSliderCard() {
     );
 }
 
-export default AboutSliderCard;
+export default React.memo(AboutSliderCard);

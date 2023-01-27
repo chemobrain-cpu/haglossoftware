@@ -28,4 +28,4 @@ function TopicHead({headText,colorText,headColor}) {
     );
 }
 
-export default TopicHead;
+export default React.memo(TopicHead);

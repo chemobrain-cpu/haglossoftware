@@ -3,13 +3,22 @@ import './NewsCard.css';
 import AOS from 'aos'
 import "aos/dist/aos.css";
 
-//let { admin} = useSelector(state => state.userAuth)
-function NewsCard() {
-    return (<div className='news-card' data-aos="fade-up">
-    <div className='left' style={{ backgroundImage: 'url(../../tracker3.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }} >
 
+function NewsCard() {
+    useEffect(()=>{
+        AOS.init({
+            duration:1000
+        });
+    })
+
+    return (<div className='news-card' 
+    data-aos="fade-up">
+    <div className='left' 
+    style={{ backgroundImage: 'url(../../tracker3.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }} >
 
     </div>
+
+
     <div className='right'>
         <h1>Tracking news</h1>
         <h3>Jun 23, 2020  /  By Admin</h3>
@@ -54,4 +63,4 @@ function NewsCard() {
     );
 }
 
-export default NewsCard;
+export default React.memo(NewsCard);

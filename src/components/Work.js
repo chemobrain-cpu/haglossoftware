@@ -2,18 +2,12 @@ import React, { useEffect } from 'react';
 import './Work.css';
 import TopicHead from './TopicHead';
 import WorkCard from './WorkCard';
-import AOS from 'aos'
-import "aos/dist/aos.css";
 
 
 function Work() {
-    useEffect(()=>{
-        AOS.init({
-            duration:1000
-        });
-    })
+    
 
-    return (<div className='work' data-aos="fade-up">
+    return (<div className='work' >
     <div className='work-head'>
         <div className='left'>
             <TopicHead headText='SEE OUR' colorText='WORK' headColor='#fff' />
@@ -41,4 +35,4 @@ function Work() {
     );
 }
 
-export default Work;
+export default React.memo(Work);

@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import './Navigation.css';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { logout } from "../store/action/userAppStorage";
@@ -10,9 +9,8 @@ function Navigation({ activeScreen, status }) {
     let [isMobile, setIsMobile] = useState(false)
     let [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
     let navigate = useNavigate()
-
+    let dispatch = useDispatch()
     let { admin } = useSelector(state => state.userAuth)
-
 
     window.addEventListener('resize', () => {
         if (Number(window.innerWidth) < 750) {
@@ -25,50 +23,47 @@ function Navigation({ activeScreen, status }) {
         }
     })
 
+    let logoutHandler = useCallback(async()=>{
+        //logging out user
+        await dispatch(logout()) 
+        navigate('/login')
+
+    },[logout])
+
     let navigateHandler = useCallback((link) => {
         navigate(`/${link}`)
     }, [navigate])
 
 
-
-
     window.addEventListener("scroll", function () {
         const navigation = document.querySelector(".navigation")
-        const contact = document.querySelector(".contact")
-        if (window.scrollY > 200) {
-            navigation.style.backgroundColor = 'rgb(20, 40, 56)   '
-            contact.style.display = 'none'
 
+        if (window.scrollY > 200) {
+            navigation.style.backgroundColor = 'rgb(20, 40, 56)'
 
         } else {
             navigation.style.backgroundColor = 'rgb(20, 40, 56)   '
             if (Number(window.innerWidth) < 750) {
                 return
             }
-            contact.style.display = 'flex'
 
 
         }
     })
 
-    let showMobileMenu = () => {
 
+    let showMobileMenu = useCallback(() => {
         if (isShowMobileMenu === true) {
             setIsShowMobileMenu(false)
             setIsMobile(false)
-
         } else {
             setIsMobile(true)
-
             setIsShowMobileMenu(true)
-
         }
-    }
+    },[])
 
 
-    let logoutHandler = ()=>{
-        alert('wanna logout')
-    }
+    
 
     return (
         <div className='navContainer'>
@@ -174,8 +169,6 @@ function Navigation({ activeScreen, status }) {
 
                     {admin?<li className='li' style={{ backgroundColor: activeScreen === 'dashboard' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#ffff' }} onClick={() => navigateHandler('dashboard')}> Dashboard</li>:<></>}
 
-
-
                     {admin?<li className='li' style={{ backgroundColor: activeScreen === 'add' ? 'rgb(58, 79, 175)' : 'transparent', padding: '10px 10px', color: '#ffff' }} onClick={() => navigateHandler('add')}> Add</li>:<></>}
 
                     {admin?<li className='li' style={{  padding: '10px 10px', color: '#ffff' }} onClick={logoutHandler}> Logout</li>:<></>}
@@ -190,4 +183,4 @@ function Navigation({ activeScreen, status }) {
     );
 }
 
-export default Navigation;
+export default React.memo(Navigation);

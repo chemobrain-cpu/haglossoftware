@@ -7,7 +7,14 @@ import CarouselCard from './CarouselCard';
 //let { admin} = useSelector(state => state.userAuth)
 function Slider() {
     return (
-        <Carousel showStatus={false} autoplay={true} interval={3000} showThumbs={false} showArrows={false} infiniteLoop={true} showIndicators={false} >
+        <Carousel 
+        showStatus={false} 
+        autoplay={true} 
+        interval={3000} 
+        showThumbs={false} 
+        showArrows={false} 
+        infiniteLoop={true} 
+        showIndicators={false} >
 
             <CarouselCard />
             <CarouselCard />
@@ -20,4 +27,4 @@ function Slider() {
     );
 }
 
-export default Slider;
+export default React.memo(Slider);

@@ -3,7 +3,7 @@ import './ServiceCard.css';
 import AOS from 'aos'
 import "aos/dist/aos.css";
 
-//let { admin} = useSelector(state => state.userAuth)
+
 function ServiceCard() {
     useEffect(()=>{
         AOS.init({
@@ -47,4 +47,4 @@ function ServiceCard() {
     );
 }
 
-export default ServiceCard;
+export default React.memo(ServiceCard);

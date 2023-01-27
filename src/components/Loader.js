@@ -12,13 +12,9 @@ let Loader = () => {
                     <p > loading...pls wait </p>
 
                 </div>
-
-
             </div>
-
         </div>
-
     </div>
 }
 
-export default Loader
+export default React.memo(Loader)

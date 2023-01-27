@@ -15,7 +15,7 @@ import "aos/dist/aos.css";
 //let { admin} = useSelector(state => state.userAuth)
 function Dashboard({ status }) {
     let [isLoading, setIsLoading] = useState(false)
-    let [searchBy, setSearchBy] = useState('CLIENT NAME')
+    let [searchBy, setSearchBy] = useState('CLIENT_NAME')
     let [searchKeyWord, setSearchKeyWord] = useState('')
     let [filteredList,setFilteredList] = useState([])
     let [isError, setIsError] = useState(false)
@@ -187,7 +187,7 @@ function Dashboard({ status }) {
                         </thead>
 
                         {filteredList.length === 0?<tbody>
-                           {clients.length > 0 ? sortByYear(clients).map(data => <tr>
+                           {clients.length > 0 ? sortByYear(clients).map(data => <tr key={data._id}>
                                 <td>{data.client_name}</td>
 
                                 <td>{data.client_phone_numbers} </td>
@@ -205,7 +205,7 @@ function Dashboard({ status }) {
 
 
                         </tbody>:<tbody>
-                           {filteredList.length > 0 ? sortByYear(filteredList).map(data => <tr>
+                           {filteredList.length > 0 ? sortByYear(filteredList).map(data => <tr key={data._id}>
                                 <td>{data.client_name}</td>
 
                                 <td>{data.client_phone_numbers} </td>

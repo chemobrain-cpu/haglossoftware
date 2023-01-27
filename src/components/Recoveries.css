@@ -40,6 +40,10 @@
     height:10vh;
     border-collapse: none;
 }
+
+.recoveries tbody td {
+    text-align:center;
+}
 .recoveries tbody tr:nth-of-type(even){
     
     background-color: rgb(240,240,240);

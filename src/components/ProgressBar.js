@@ -3,7 +3,7 @@ import './ProgressBar.css';
 import AOS from 'aos'
 import "aos/dist/aos.css";
 
-//let { admin} = useSelector(state => state.userAuth)
+
 function ProgressBar({ about, percent }) {
     useEffect(()=>{
         AOS.init({
@@ -12,9 +12,12 @@ function ProgressBar({ about, percent }) {
     })
 
     return (
-        <div className='progress-container' data-aos="fade-up">
+        <div className='progress-container' 
+        data-aos="fade-up">
             <h3 className='progress-text'>{about}</h3>
+
             <div className='progressive-bar'>
+
                 <div className='progressive' style={{width:percent}}>
                   {percent}
 
@@ -28,4 +31,4 @@ function ProgressBar({ about, percent }) {
     );
 }
 
-export default ProgressBar;
+export default React.memo(ProgressBar);

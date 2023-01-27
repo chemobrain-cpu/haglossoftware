@@ -6,7 +6,6 @@ import AuthSliderCard from './AuthSliderCard';
 import AOS from 'aos'
 import "aos/dist/aos.css";
 
-//let { admin} = useSelector(state => state.userAuth)
 function AuthSlider({status}) {
     useEffect(() => {
         AOS.init({
@@ -23,4 +22,4 @@ function AuthSlider({status}) {
     );
 }
 
-export default AuthSlider;
+export default React.memo(AuthSlider);

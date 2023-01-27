@@ -7,14 +7,9 @@ let Loader = ({errorText,gotIt}) => {
         <div className='modal_center'>
             <div className='modal_input_card'>
                 <div className='modal_heading_con'>
-                   
                     <p >{errorText}</p>
-
                     <button onClick={gotIt}>try again</button>
-
                 </div>
-
-
             </div>
 
         </div>
@@ -22,4 +17,4 @@ let Loader = ({errorText,gotIt}) => {
     </div>
 }
 
-export default Loader
+export default React.memo(Loader)

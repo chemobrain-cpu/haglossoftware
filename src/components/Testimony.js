@@ -4,8 +4,7 @@ import TestimonyCard from './TestimonyCard';
 import TopicHead from './TopicHead';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css'
-import AOS from 'aos'
-import "aos/dist/aos.css";
+
 
 const responsive = {
     desktop: {
@@ -26,15 +25,11 @@ const responsive = {
 };
 
 function Testimony() {
-    useEffect(()=>{
-        AOS.init({
-            duration:1000
-        });
-    })
+  
 
 
     return (
-        <div className='testimony' data-aos="fade-up">
+        <div className='testimony' >
 
             <TopicHead headText='OUR' colorText='TESTIMONIES' />
             <Carousel swipeable={false}
@@ -84,4 +79,4 @@ function Testimony() {
     );
 }
 
-export default Testimony;
+export default React.memo(Testimony);

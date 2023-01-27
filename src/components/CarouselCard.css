@@ -1,5 +1,5 @@
 .carouselCard {
-    height: 60vh;
+    height: 70vh;
     object-fit: cover;
     overflow: hidden;
     display: flex;
@@ -79,6 +79,10 @@
 @media screen and (max-width: 750px) {
 
     /*  carousel style */
+    .carouselCard {
+        height: 60vh;
+    
+    }
 
     .carouselContent h1 {
         width: 100%;

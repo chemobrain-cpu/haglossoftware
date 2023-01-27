@@ -55,7 +55,6 @@ export const validatePhoneNumber = (data)=>{
 }
 
 export const validatePassword = (data)=>{
-    
     let error = ""
     if(data.length === 0 ){
         error="field should not be empty"

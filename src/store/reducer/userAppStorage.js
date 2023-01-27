@@ -57,9 +57,6 @@ export const userAuthReducer = (state = initialState, action) => {
         case DELETE_CLIENT:
             let clients = state.clients.filter(data => data._id !== action.payload)
 
-            console.log(action.payload)
-            console.log(clients)
-
             return {
                 ...state,
                 clients: clients,
@@ -78,9 +75,6 @@ export const userAuthReducer = (state = initialState, action) => {
                 expiresIn: "",
                 admin: null,
             }
-
-
-
 
         default:
             return state

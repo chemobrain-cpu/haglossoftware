@@ -4,7 +4,6 @@ import AOS from 'aos'
 import "aos/dist/aos.css";
 
 
-//let { admin} = useSelector(state => state.userAuth)
 function TestimonyCard({username,country,imgUrl}) {
     useEffect(()=>{
         AOS.init({
@@ -46,14 +45,12 @@ function TestimonyCard({username,country,imgUrl}) {
             </div>
 
             <div className='paragraph-con'>
-
                 <p> Lorem ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan </p>
 
             </div>
 
         </div>
-
     );
 }
 
-export default TestimonyCard;
+export default React.memo(TestimonyCard);

@@ -7,7 +7,8 @@
 }
 
 .news-card .left{
-    width: 40%
+    width: 40%;
+    opacity: 0.8;
 
 }
 .news-card .right{

@@ -9,14 +9,14 @@ import AboutSlider from '../../components/AboutSlider';
 function AboutUs() {
     return (
         <>
-            <Navigation activeScreen='about' status={false} />
+            <Navigation 
+            activeScreen='about' 
+            status={false} 
+            />
+
             <AboutSlider />
             <News />
-
             <Footer/>
-
-
-
         </>
 
     );
