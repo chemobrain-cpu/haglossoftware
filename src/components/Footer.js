@@ -2,18 +2,27 @@ import React, { useEffect } from 'react';
 import './Footer.css';
 import AOS from 'aos'
 import "aos/dist/aos.css";
+import { useNavigate } from 'react-router-dom';
 
 //let { admin} = useSelector(state => state.userAuth)
 function Footer() {
+    let navigate = useNavigate()
     useEffect(()=>{
         AOS.init({
             duration:1000
         });
     })
+
+    let navigateHandler=()=>{
+        navigate('/signup')
+    }
+
+
+
     return (<div className='footer' data-aos="fade-up">
     <div className='brands'>
         <div className='image-container'>
-            <img src='../../logo1.png' />
+            <img src='../../logo1.png' onClick={navigateHandler}/>
 
         </div>
         <div className='image-container'>
